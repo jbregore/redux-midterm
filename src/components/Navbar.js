@@ -21,7 +21,7 @@ import firebase from "../utils/firebase/firebase";
 //DISPATCHER AND ACTION
 import { useDispatch } from "react-redux";
 import { setSearch } from "../redux/actions/controlsAction";
-import { goSearch } from "../redux/actions/studentAction";
+import { goSearch, isLogged, signOut } from "../redux/actions/studentAction";
 
 //SELECTOR
 import { useSelector } from "react-redux";
@@ -110,7 +110,7 @@ export default function Navbar(props) {
   const dispatch = useDispatch();
 
   //SELECTOR
-  const controls = useSelector( (state) => state.controls );
+  const controls = useSelector((state) => state.controls);
 
   //STATES
   const [state, setState] = useState({
@@ -121,6 +121,7 @@ export default function Navbar(props) {
   const [open, setOpen] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
 
+  const student = useSelector((state) => state.student);
 
   //ONCHANE TEXTFIELD
   const handleChange = (prop) => (e) => {
@@ -132,12 +133,13 @@ export default function Navbar(props) {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         setAuthenticated(true);
+        dispatch(isLogged(user.email));
         setState({ logAs: user.email })
       } else {
         setAuthenticated(false);
       }
     });
-  }, []);
+  }, [student.viewOneStudent]); // eslint-disable-line react-hooks/exhaustive-deps
 
   //SIGN IN
   const submit = (e) => {
@@ -153,6 +155,7 @@ export default function Navbar(props) {
         // Signed in 
         // console.log(user.email);
         alert("Sign in success");
+        dispatch(isLogged(userCredential.email));
         // ...
       })
       .catch((error) => {
@@ -180,6 +183,7 @@ export default function Navbar(props) {
       .signOut()
       .then((success) => {
         alert("Logout successful!");
+        dispatch(signOut());
       })
       .catch((err) => {
         //error
@@ -224,7 +228,7 @@ export default function Navbar(props) {
                 noWrap
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                style={{fontWeight: 400}}
+                style={{ fontWeight: 400 }}
               >
                 Student Review
               </Typography>
@@ -303,30 +307,41 @@ export default function Navbar(props) {
               backgroundColor: '#131414', height: 220, width: 280,
               position: 'absolute', right: 180, top: 65, borderRadius: 5, border: '1px solid #303336',
               zIndex: 1
-            
+
             }}>
 
             <Box style={{ textAlign: 'center', marginTop: 20, paddingRight: 30, paddingLeft: 30, }}>
-              <Typography style={{ color: '#D1D4C9', fontSize: 18 }}>
+              {authenticated ? (
+                <Typography style={{ color: '#D1D4C9', fontSize: 18 }}>
+                  Sign Out
+                </Typography>
+              ) : (<Typography style={{ color: '#D1D4C9', fontSize: 18 }}>
                 Sign In
-              </Typography>
-              {authenticated ? (<LogoutIcon style={{
-                color: '#fff', width: 30, height: 30, float: 'right',
-                marginTop: -30, cursor: 'pointer'
-              }} onClick={logout} />) : (<div></div>)}
+              </Typography>)
+              }
+              {authenticated ? (
+                <><LogoutIcon style={{
+                  color: '#fff', width: 30, height: 30, float: 'right',
+                  marginTop: -30, cursor: 'pointer'
+                }} onClick={logout} />
+                  <Typography style={{ color: '#B6B6B5', fontSize: 14, marginTop: 8 }}>
+                    You can now submit your review.
+                  </Typography>
+                </>
+              ) : (
+                <><Typography style={{ color: '#B6B6B5', fontSize: 14, marginTop: 8 }}>
+                  Sign In to review and rate students
+                </Typography>
 
-              <Typography style={{ color: '#B6B6B5', fontSize: 14, marginTop: 8 }}>
-                Sign In to review and rate students
-              </Typography>
+                  <Box style={{ marginTop: 20 }}>
+                    <StyledTextField id="standard-basic" variant="standard"
+                      placeholder="Enter your email..." onChange={handleChange("email")} />
+                    <Button variant="contained" style={{
+                      width: '50%', backgroundColor: '#20C284',
+                      marginTop: 15, height: 30
+                    }} onClick={submit}>Sign In</Button>
+                  </Box></>)}
 
-              <Box style={{ marginTop: 20 }}>
-                <StyledTextField id="standard-basic" variant="standard"
-                  placeholder="Enter your email..." onChange={handleChange("email")} />
-                <Button variant="contained" style={{
-                  width: '50%', backgroundColor: '#20C284',
-                  marginTop: 15, height: 30
-                }} onClick={submit}>Sign In</Button>
-              </Box>
             </Box>
           </Box>
         </ClickAwayListener>

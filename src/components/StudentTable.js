@@ -23,8 +23,6 @@ import StarRatings from 'react-star-ratings';
 //SELECTOR
 import { useSelector } from "react-redux";
 
-//ROUTING
-import { useHistory } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -63,16 +61,13 @@ export default function StudentTable() {
     //DISPATCHER
     const dispatch = useDispatch();
 
-    //NAVIGATION
-    const history = useHistory();
-
     useEffect(() => {
         setTimeout(() => {
             dispatch(setList());
             setLoading(false);
         }, 400)
         // console.log(student.studentList)
-    }, [loading])
+    }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
     // useEffect(() => {
     //     dispatch(getList());
@@ -131,7 +126,7 @@ export default function StudentTable() {
     const navigatePage = (id) => {
         dispatch(setViewStudent(id));
         setTimeout(() => {
-            // history.push('/studentevaluation');
+            // history.push('/studentevaluation'+id);
             // history.push({pathname:"/studentevaluation",state: {id: id}});
         }, 1000)
     }
@@ -163,41 +158,51 @@ export default function StudentTable() {
                                 borderTopLeftRadius: 15, borderBottomLeftRadius: 15,
                                 border: '1px solid #303336', borderRight: 'none',
                             }} >
-                                <Box style={{
-                                    display: 'flex', flexDirection: 'row',
-                                    justifyContent: 'flex-start', alignItems: 'center',
-                                }}>
-                                    <Box style={{ width: 45, marginRight: 20 }}>
-                                        <CardMedia
-                                            component="img"
-                                            sx={{
-                                                width: 45, height: 45,
-                                                border: "3px solid #646566",
-                                                // border: "3px solid #646566",
-                                                borderRadius: 15
-                                            }}
-                                            image={row.profile_photo}
-                                        />
+                                <Link to={`studentevaluation/${row.id}`} style={{textDecoration: 'none'}}>
+                                    <Box style={{
+                                        display: 'flex', flexDirection: 'row',
+                                        justifyContent: 'flex-start', alignItems: 'center',
+                                    }}>
+                                        <Box style={{ width: 45, marginRight: 20 }}>
+                                            <CardMedia
+                                                component="img"
+                                                sx={{
+                                                    width: 45, height: 45,
+                                                    border: "3px solid #646566",
+                                                    // border: "3px solid #646566",
+                                                    borderRadius: 15
+                                                }}
+                                                image={row.profile_photo}
+                                            />
+                                        </Box>
+                                        <Typography style={{ fontSize: 14, color: "#D1D4C9" }}>
+                                            {row.name}
+                                        </Typography>
                                     </Box>
-                                    <Typography style={{ fontSize: 14, color: "#D1D4C9" }}>
-                                        <Link to={`studentevaluation/${row.id}`}>{row.name}</Link>
-                                    </Typography>
-                                </Box>
+                                </Link>
 
                             </StyledTableCell>
                             <StyledTableCell align="center" style={{
                                 border: '1px solid #303336',
                                 borderLeft: 'none', borderRight: 'none', fontSize: 14
-                            }}>{row.section}</StyledTableCell>
+                            }}>
+                                <Link to={`studentevaluation/${row.id}`} style={{textDecoration: 'none', color: "#62666D"}}>
+                                    {row.section}
+                                </Link>
+                            </StyledTableCell>
                             <StyledTableCell align="center" style={{
                                 border: '1px solid #303336',
                                 borderLeft: 'none', borderRight: 'none', fontSize: 14,
                                 color: "#D1D4C9"
-                            }}>{row.c_reviews}</StyledTableCell>
+                            }}>
+                                <Link to={`studentevaluation/${row.id}`} style={{textDecoration: 'none', color: "#62666D"}}>{row.c_reviews}
+                                </Link>
+                            </StyledTableCell>
                             <StyledTableCell align="center" style={{
                                 borderTopRightRadius: 15, borderBottomRightRadius: 15,
                                 border: '1px solid #303336', borderLeft: 'none', fontSize: 14,
                             }}>
+                                <Link to={`studentevaluation/${row.id}`} style={{textDecoration: 'none'}}>
                                 <StarRatings
                                     rating={row.c_rating}
                                     starRatedColor="#26CE8D"
@@ -209,6 +214,7 @@ export default function StudentTable() {
                                     starHoverColor="#26CE8D"
                                     starEmptyColor="#696969"
                                 />
+                                </Link>
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}

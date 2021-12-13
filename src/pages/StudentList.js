@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Box } from '@mui/material';
 
 import TopStudentCard from "../components/TopStudentCard";
@@ -8,22 +8,30 @@ import StudentTablePagination from "../components/StudentTablePagination";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-//DATAS
-import GetStudentList from "../datas/GetStudentList";
-import GetTopStudent from "../datas/GetTopStudent";
+//DISPATCHER AND ACTION
+import { useDispatch } from "react-redux";
 
+import { setTopStudent } from "../redux/actions/studentAction";
 
 export default function Studentlist() {
   const open = false;
 
+  const [loading, setLoading] = useState(true);
+
+  //DISPATCHER
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    setTimeout(() => {
+        dispatch(setTopStudent());
+        setLoading(false);
+    }, 400)
+    // console.log(student.studentList)
+}, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: '#131414', width: '100%', }}>
       <Navbar open={open} />
-
-      {/* COMPONENT NA NAG GEGET LANG NG DATA AT NAG STORE SA REDUX STATE*/}
-      {/* DIKO MAPAGANA YUNG DATA LANG ANG MAEEXPORT WITHOUT COMPONENT EH HAHAHA  */}
-      {/* <GetTopStudent /> */}
-      {/* <GetStudentList /> */}
 
       <br /><br /><br />
 

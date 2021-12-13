@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
-import {
-  Star as StarIcon
-} from '@mui/icons-material';
 
 import StudentProfile from "../components/StudentProfile";
 import FilterArea from "../components/FilterArea";
@@ -13,8 +10,10 @@ import Footer from "../components/Footer";
 import RateCard from "../components/RateCard";
 
 import { useDispatch } from "react-redux";
-import { setViewStudent } from "../redux/actions/studentAction";
+import { setViewStudent, setCommentList } from "../redux/actions/studentAction";
 
+//SELECTOR
+import { useSelector } from "react-redux";
 
 export default function StudentEvaluation(props) {
   //DISPATCHER
@@ -23,18 +22,15 @@ export default function StudentEvaluation(props) {
   const { id } = props.match.params;
   const [loading, setLoading] = useState(true);
 
-  console.log(id)
-  if(id === ""){
-    alert("gago ka")
-  }
+  const student = useSelector((state) => state.student);
 
   useEffect(() => {
     setTimeout(() => {
-      
       dispatch(setViewStudent(id));
+      dispatch(setCommentList(id));
       setLoading(false);
     }, 400)
-  }, [loading])
+  }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
   return (
@@ -54,28 +50,15 @@ export default function StudentEvaluation(props) {
           marginTop: 40, display: 'flex',
           alignItems: 'center', justifyContent: 'center', flexDirection: 'column'
         }}>
-          <Typography style={{ color: '#D1D4C9', fontSize: 20, marginBottom: 5 }}>
-            Add your Rating
-          </Typography>
-          <Box sx={{
-            display: 'grid',
-            gap: .1,
-            gridTemplateColumns: 'repeat(5, 1fr)',
-            cursor: 'pointer'
-          }}>
-            <StarIcon style={{ color: '#2C2F31', width: 35, height: 35 }} />
-            <StarIcon style={{ color: '#2C2F31', width: 35, height: 35 }} />
-            <StarIcon style={{ color: '#2C2F31', width: 35, height: 35 }} />
-            <StarIcon style={{ color: '#2C2F31', width: 35, height: 35 }} />
-            <StarIcon style={{ color: '#2C2F31', width: 35, height: 35 }} />
-          </Box>
-
-          <RateCard />
-
+          {student.authEmail === undefined ||  student.authEmail === "" ? ( <div>
+            <Typography style={{ color: '#26CE8D', fontSize: 18 }}>
+                  Sign In first to rate students
+                </Typography>
+          </div> ) : (<RateCard />)}
         </Box>
 
         {/* filter component  */}
-        <Box style={{ marginTop: 20, marginRight: -20 }}>
+        <Box style={{ marginTop: 20, marginRight: -5 }}>
           <FilterArea />
         </Box>
 

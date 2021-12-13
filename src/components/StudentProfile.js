@@ -10,7 +10,6 @@ import {
     TableContainer,
     TableRow
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
 
 //SELECTOR
 import { useSelector } from "react-redux";
@@ -18,14 +17,8 @@ import { useSelector } from "react-redux";
 //STAR RATING
 import StarRatings from 'react-star-ratings';
 
-//DISPATCHER AND ACTION
-import { useDispatch } from "react-redux";
-import { setViewStudent } from "../redux/actions/studentAction";
 
 export default function StudentProfile(props) {
-
-    //DISPATCHER
-    const dispatch = useDispatch();
 
     const student = useSelector((state) => state.student);
 
@@ -33,61 +26,16 @@ export default function StudentProfile(props) {
     const [loading, setLoading] = useState(true);
 
 
-    // useEffect(() => {
-    //     if (student.viewOneStudent === undefined) {
-    //         if (loading) {
-    //             dispatch(setViewStudent("EQLbqWTXIx6Yq3pUsE6p"));
-    //             // alert("putangina ka gago ka")
-    //             setLoading(false);
-    //         }
-    //     } else {
-    //         setLoading(false)
-    //         setViewOne(student.viewOneStudent);
-    //         // console.log(student.viewOneStudent);
-    //     }
-    // }, [student.viewOneStudent])
-
     useEffect(() => {
         if (student.viewOneStudent === undefined) {
 
         } else {
-            console.log(student.viewOneStudent)
+            // console.log(student.viewOneStudent);
             setViewOne(student.viewOneStudent);
             setLoading(false);
         }
-        console.log(loading)
+        // console.log(loading)
     }, [student.viewOneStudent])
-    // eslint-disable-line react-hooks/exhaustive-deps
-
-    // function createData(name, calories, fat, carbs, protein) {
-    //     return { name, calories, fat, carbs, protein };
-    // }
-
-    // const rows = [
-    //     createData('Gender: ', viewOne.gender, 'Teamwork:', 3.0),
-    //     createData('Birthday:', viewOne.birthday, 'Creativity:', 4.0),
-    //     createData('Address:', viewOne.address, 'Adaptability:', 1.0),
-    //     createData('Nickname:', viewOne.nickName, 'Leadership:', 2.0),
-    //     createData('Skills / Language:', viewOne.skills, 'Persuasion:', 3.9),
-    // ];
-
-    // useEffect(() => {
-    //     //IF ELSE KASE DIKO MA FORCE YUNG RERENDER HAHAA
-    //     //DAMI PANG DAPAT PRAKTISIN 
-    //     if (student.viewOneStudent === {}) {
-    //     } else {
-    //         setViewOne(student.viewOneStudent);
-    //         console.log(viewOne)
-    //     }
-    // }, [student.viewOneStudent])
-
-    // useEffect(() => {
-    //     if (student.viewOneStudent === undefined) {
-    //     } else {
-    //         setViewOne(student.viewOneStudent);
-    //         console.log(viewOne)
-    //     }
-    // }, [student.viewOneStudent])
 
     const Profiles = () => {
         return (
@@ -156,10 +104,11 @@ export default function StudentProfile(props) {
                                             <TableCell align="right" style={{ width: '10%', color: '#B0B1AE', fontWeight: 600, border: 'none' }}>Teamwork</TableCell>
                                             <TableCell align="right" style={{ width: '10%', border: 'none' }}>
                                                 <Box style={{
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#26CE8D', padding: 5,
+                                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                     backgroundColor: viewOne.c_teamwork <= 2 ? '#E03E65' : '#26CE8D', padding: 5,
                                                     borderRadius: 8, color: '#fff'
                                                 }}>
-                                                    3.0
+                                                    {viewOne.c_teamwork}
                                                 </Box>
                                             </TableCell>
                                         </TableRow>
@@ -172,10 +121,11 @@ export default function StudentProfile(props) {
                                             <TableCell align="right" style={{ width: '10%', color: '#B0B1AE', fontWeight: 600, border: 'none' }}>Creativity</TableCell>
                                             <TableCell align="right" style={{ width: '10%', border: 'none' }}>
                                                 <Box style={{
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#26CE8D', padding: 5,
+                                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                     backgroundColor: viewOne.c_creativity <= 2 ? '#E03E65' : '#26CE8D', padding: 5,
                                                     borderRadius: 8, color: '#fff'
                                                 }}>
-                                                    3.0
+                                                    {viewOne.c_creativity}
                                                 </Box>
                                             </TableCell>
                                         </TableRow>
@@ -188,10 +138,11 @@ export default function StudentProfile(props) {
                                             <TableCell align="right" style={{ width: '10%', color: '#B0B1AE', fontWeight: 600, border: 'none' }}>Adaptability</TableCell>
                                             <TableCell align="right" style={{ width: '10%', border: 'none' }}>
                                                 <Box style={{
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#26CE8D', padding: 5,
+                                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                     backgroundColor: viewOne.c_adaptability <= 2 ? '#E03E65' : '#26CE8D', padding: 5,
                                                     borderRadius: 8, color: '#fff'
                                                 }}>
-                                                    3.0
+                                                    {viewOne.c_adaptability}
                                                 </Box>
                                             </TableCell>
                                         </TableRow>
@@ -204,10 +155,11 @@ export default function StudentProfile(props) {
                                             <TableCell align="right" style={{ width: '10%', color: '#B0B1AE', fontWeight: 600, border: 'none' }}>Leadership</TableCell>
                                             <TableCell align="right" style={{ width: '10%', border: 'none' }}>
                                                 <Box style={{
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#26CE8D', padding: 5,
+                                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                     backgroundColor: viewOne.c_leadership <= 2 ? '#E03E65' : '#26CE8D', padding: 5,
                                                     borderRadius: 8, color: '#fff'
                                                 }}>
-                                                    3.0
+                                                    {viewOne.c_leadership} 
                                                 </Box>
                                             </TableCell>
                                         </TableRow>
@@ -220,10 +172,11 @@ export default function StudentProfile(props) {
                                             <TableCell align="right" style={{ width: '10%', color: '#B0B1AE', fontWeight: 600, border: 'none' }}>Persuasion</TableCell>
                                             <TableCell align="right" style={{ width: '10%', border: 'none' }}>
                                                 <Box style={{
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#26CE8D', padding: 5,
-                                                    borderRadius: 8, color: '#fff'
+                                                    display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                                                    backgroundColor: viewOne.c_persuasion <= 2 ? '#E03E65' : '#26CE8D' , padding: 5,
+                                                    borderRadius: 8, color: '#fff', paddingLeft: 12, paddingRight: 12
                                                 }}>
-                                                    3.0
+                                                    {viewOne.c_persuasion}
                                                 </Box>
                                             </TableCell>
                                         </TableRow>
